@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le labo de l'écriture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #7C4DFF;
+    --purple-light: #EDE7FF;
+    --purple-mid: #B39DDB;
+    --teal: #00BFA5;
+    --teal-light: #E0F7FA;
+    --coral: #FF6E40;
+    --coral-light: #FBE9E7;
+    --amber: #FFB300;
+    --amber-light: #FFF8E1;
+    --green: #43A047;
+    --green-light: #E8F5E9;
+    --blue: #1E88E5;
+    --blue-light: #E3F2FD;
+    --pink: #E91E63;
+    --pink-light: #FCE4EC;
+    --bg: #F8F6FF;
+    --card: #FFFFFF;
+    --text: #2D1B69;
+    --text-mid: #5E35B1;
+    --text-muted: #7E57C2;
+    --border: #D1C4E9;
+    --shadow: 0 4px 20px rgba(124,77,255,0.10);
+    --shadow-hover: 0 8px 32px rgba(124,77,255,0.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.6;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(179,157,219,0.18) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba(0,191,165,0.10) 0%, transparent 50%);
+  }
+
+  .page-wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 32px 0 24px;
+  }
+  .header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--purple), var(--teal));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .header p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  /* Steps nav */
+  .steps-nav {
+    display: flex;
+    gap: 0;
+    background: var(--card);
+    border-radius: 999px;
+    border: 2px solid var(--border);
+    padding: 4px;
+    margin: 0 0 28px;
+    overflow: hidden;
+  }
+  .step-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 6px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .step-btn .step-num {
+    width: 22px; height: 22px;
+    background: var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .step-btn.active {
+    background: var(--purple);
+    color: white;
+  }
+  .step-btn.active .step-num {
+    background: rgba(255,255,255,0.25);
+    color: white;
+  }
+  .step-btn.done {
+    color: var(--green);
+  }
+  .step-btn.done .step-num {
+    background: var(--green-light);
+    color: var(--green);
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    padding: 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .card-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-title .emoji {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  /* Textarea */
+  textarea {
+    width: 100%;
+    min-height: 160px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    background: var(--bg);
+    resize: vertical;
+    transition: border-color 0.2s;
+    line-height: 1.7;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: var(--purple);
+    background: white;
+  }
+  textarea::placeholder { color: var(--text-muted); opacity: 0.6; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), #5E35B1);
+    color: white;
+    box-shadow: 0 4px 15px rgba(124,77,255,0.30);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,77,255,0.40); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary {
+    background: var(--purple-light);
+    color: var(--purple);
+    border: 1.5px solid var(--purple-mid);
+  }
+  .btn-secondary:hover { background: #D1C4E9; }
+  .btn-teal {
+    background: linear-gradient(135deg, var(--teal), #00897B);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,191,165,0.30);
+  }
+  .btn-teal:hover { transform: translateY(-2px); }
+  .btn-sm { padding: 7px 16px; font-size: 0.85rem; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+  /* DRAS Section */
+  .dras-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .dras-card {
+    border-radius: var(--radius);
+    border: 2px solid transparent;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .dras-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .dras-card.d-card { background: var(--blue-light); border-color: #90CAF9; }
+  .dras-card.r-card { background: var(--coral-light); border-color: #FFAB91; }
+  .dras-card.a-card { background: var(--green-light); border-color: #A5D6A7; }
+  .dras-card.s-card { background: var(--amber-light); border-color: #FFE082; }
+  .dras-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+  .dras-card.active {
+    border-width: 3px;
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+  }
+  .dras-card.d-card.active { border-color: var(--blue); }
+  .dras-card.r-card.active { border-color: var(--coral); }
+  .dras-card.a-card.active { border-color: var(--green); }
+  .dras-card.s-card.active { border-color: var(--amber); }
+  .dras-letter {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .d-card .dras-letter { color: var(--blue); }
+  .r-card .dras-letter { color: var(--coral); }
+  .a-card .dras-letter { color: var(--green); }
+  .s-card .dras-letter { color: var(--amber); }
+  .dras-word {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .dras-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .dras-example {
+    display: none;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1.5px dashed currentColor;
+    opacity: 0.7;
+    font-size: 0.88rem;
+  }
+  .dras-card.active .dras-example { display: block; }
+
+  /* DRAS task area */
+  .dras-task {
+    background: var(--purple-light);
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--purple-mid);
+    padding: 16px;
+    margin: 14px 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .dras-task strong { color: var(--purple); }
+
+  .phrase-to-improve {
+    background: white;
+    border-left: 4px solid var(--purple);
+    padding: 12px 16px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text);
+    margin: 10px 0;
+    font-weight: 600;
+  }
+
+  .ai-loader {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--purple-light);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 10px 0;
+  }
+  .ai-loader.visible { display: flex; }
+  .dots span {
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: var(--purple);
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: bounce 1.2s ease-in-out infinite;
+  }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%,60%,100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+  }
+
+  .ai-response {
+    background: linear-gradient(135deg, var(--purple-light), #E8F5E9);
+    border: 1.5px solid var(--purple-mid);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin: 10px 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    display: none;
+  }
+  .ai-response.visible { display: block; }
+  .ai-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--purple);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* CHAMPIONS */
+  .champions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .champ-card {
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .champ-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .champ-card.active { border-width: 2.5px; box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+  .champ-letter {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0 auto 6px;
+    border: 3px solid currentColor;
+  }
+  .champ-name { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .champ-short { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; line-height: 1.3; }
+
+  /* Colors for each champion */
+  .c-C { background: #E3F2FD; border-color: #90CAF9; }
+  .c-C.active { border-color: var(--blue); }
+  .c-C .champ-letter { color: var(--blue); background: var(--blue-light); }
+  .c-H { background: #F3E5F5; border-color: #CE93D8; }
+  .c-H.active { border-color: #8E24AA; }
+  .c-H .champ-letter { color: #8E24AA; background: #F3E5F5; }
+  .c-A { background: var(--pink-light); border-color: #F48FB1; }
+  .c-A.active { border-color: var(--pink); }
+  .c-A .champ-letter { color: var(--pink); background: var(--pink-light); }
+  .c-M { background: var(--amber-light); border-color: #FFE082; }
+  .c-M.active { border-color: var(--amber); }
+  .c-M .champ-letter { color: #E65100; background: var(--amber-light); }
+  .c-P { background: var(--coral-light); border-color: #FFAB91; }
+  .c-P.active { border-color: var(--coral); }
+  .c-P .champ-letter { color: var(--coral); background: var(--coral-light); }
+  .c-I { background: var(--teal-light); border-color: #80CBC4; }
+  .c-I.active { border-color: var(--teal); }
+  .c-I .champ-letter { color: var(--teal); background: var(--teal-light); }
+  .c-O { background: var(--green-light); border-color: #A5D6A7; }
+  .c-O.active { border-color: var(--green); }
+  .c-O .champ-letter { color: var(--green); background: var(--green-light); }
+  .c-N { background: #FFF3E0; border-color: #FFCC80; }
+  .c-N.active { border-color: #FB8C00; }
+  .c-N .champ-letter { color: #FB8C00; background: #FFF3E0; }
+  .c-S { background: var(--purple-light); border-color: var(--purple-mid); }
+  .c-S.active { border-color: var(--purple); }
+  .c-S .champ-letter { color: var(--purple); background: var(--purple-light); }
+
+  /* Error markers in text */
+  .error-highlight { background: #FFE082; border-radius: 3px; padding: 0 2px; cursor: pointer; }
+  .correction { background: #C8E6C9; border-radius: 3px; padding: 0 2px; text-decoration: line-through; text-decoration-color: red; }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    background: var(--border);
+    border-radius: 999px;
+    height: 8px;
+    margin: 8px 0 20px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), var(--teal));
+    border-radius: 999px;
+    transition: width 0.5s ease;
+  }
+
+  /* Result box */
+  .result-box {
+    background: linear-gradient(135deg, #F3E5F5, var(--teal-light));
+    border: 2px solid var(--purple-mid);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 14px 0;
+    font-size: 1rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Screens */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Celebration */
+  .celebrate {
+    text-align: center;
+    padding: 20px 0 10px;
+  }
+  .celebrate .big-emoji { font-size: 4rem; display: block; margin-bottom: 12px; animation: pop 0.4s ease; }
+  @keyframes pop { 0% { transform: scale(0); } 80% { transform: scale(1.2); } 100% { transform: scale(1); } }
+  .celebrate h2 { font-family: 'Baloo 2', cursive; font-size: 1.6rem; font-weight: 800; color: var(--purple); }
+  .celebrate p { color: var(--text-muted); font-size: 0.95rem; margin-top: 6px; }
+
+  /* Compare panel */
+  .compare-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .compare-col h4 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--border);
+  }
+  .compare-col.before h4 { color: var(--text-muted); }
+  .compare-col.after h4 { color: var(--green); }
+  .compare-col .text-content {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  /* Tooltip */
+  .tip {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .tip .tip-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* DRAS progress dots */
+  .dras-progress {
+    display: flex;
+    gap: 6px;
+    margin: 12px 0;
+    align-items: center;
+  }
+  .dras-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s;
+  }
+  .dras-dot.done { background: var(--green); }
+  .dras-dot.current { background: var(--purple); transform: scale(1.3); }
+  .dras-progress-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-left: 4px; }
+
+  /* Sentence list for DRAS */
+  .sentence-list { list-style: none; margin: 10px 0; }
+  .sentence-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+    cursor: pointer;
+    border: 1.5px solid var(--border);
+    background: white;
+    transition: all 0.15s;
+    font-size: 0.93rem;
+  }
+  .sentence-item:hover { border-color: var(--purple); background: var(--purple-light); }
+  .sentence-item.selected { border-color: var(--purple); background: var(--purple-light); }
+  .sentence-num {
+    min-width: 24px; height: 24px;
+    background: var(--purple-light);
+    color: var(--purple);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .sentence-item.selected .sentence-num { background: var(--purple); color: white; }
+
+  @media (max-width: 560px) {
+    .dras-grid { grid-template-columns: 1fr 1fr; }
+    .champions-grid { grid-template-columns: repeat(3, 1fr); }
+    .compare-panel { grid-template-columns: 1fr; }
+    .header h1 { font-size: 1.8rem; }
+    .card { padding: 18px; }
+    .step-btn { font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="header">
+    <div style="display:flex; align-items:center; justify-content:center; gap:14px;">
+      <img src="/mnt/user-data/uploads/logo-labo-des-savoirs.png" alt="Logo Le labo des savoirs" style="width:64px; height:64px; object-fit:contain; flex-shrink:0;">
+      <h1 style="margin:0;">Le labo de l'écriture</h1>
+    </div>
+    <p>Améliore ton texte étape par étape comme un vrai écrivain !</p>
+  </div>
+
+  <!-- STEPS NAV -->
+  <div class="steps-nav" id="stepsNav">
+    <button class="step-btn active" onclick="goToStep(1)" id="navBtn1">
+      <span class="step-num">1</span> Mon texte
+    </button>
+    <button class="step-btn" onclick="goToStep(2)" id="navBtn2">
+      <span class="step-num">2</span> DRAS
+    </button>
+    <button class="step-btn" onclick="goToStep(3)" id="navBtn3">
+      <span class="step-num">3</span> Champions
+    </button>
+    <button class="step-btn" onclick="goToStep(4)" id="navBtn4">
+      <span class="step-num">4</span> Bravo !
+    </button>
+  </div>
+
+  <!-- SCREEN 1: Write initial text -->
+  <div class="screen active" id="screen1">
+    <div class="card">
+      <div class="card-title"><span class="emoji">✍️</span> Écris ton texte</div>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:14px;">
+        Commence par écrire ton texte librement, sans t'inquiéter des erreurs. Tout ce que tu penses, mets-le ici !
+      </p>
+      <textarea id="initialText" placeholder="Il était une fois un dragon qui vivait dans une grotte. Le dragon aimait les trésors. Il avait beaucoup d'or. Le dragon était content..."></textarea>
+      <div class="tip">
+        <span class="tip-icon">💡</span>
+        <span>Essaie d'écrire <strong>au moins 3 ou 4 phrases</strong>. Plus ton texte est long, plus on peut l'améliorer ensemble !</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="startDRAS()">
+          ➡️ Améliorer avec le DRAS
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: DRAS -->
+  <div class="screen" id="screen2">
+    <div class="card">
+      <div class="card-title"><span class="emoji">🔧</span> Étape 1 : Améliore avec le DRAS</div>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:10px;">
+        Le DRAS, c'est 4 façons magiques d'améliorer tes phrases. Clique sur une lettre pour découvrir comment l'utiliser !
+      </p>
+
+      <!-- DRAS selector -->
+      <div class="dras-grid">
+        <div class="dras-card d-card" id="dCard" onclick="selectDRAS('D')">
+          <div class="dras-letter">D</div>
+          <div class="dras-word">Déplacer</div>
+          <div class="dras-desc">Je change la place d'un groupe de mots</div>
+          <div class="dras-example">
+            <strong>Avant :</strong> Le chat dort <u>sur le radiateur</u>.<br>
+            <strong>Après :</strong> <u>Sur le radiateur</u>, le chat dort.
+          </div>
+        </div>
+        <div class="dras-card r-card" id="rCard" onclick="selectDRAS('R')">
+          <div class="dras-letter">R</div>
+          <div class="dras-word">Remplacer</div>
+          <div class="dras-desc">Je trouve un mot plus précis ou plus beau</div>
+          <div class="dras-example">
+            <strong>Avant :</strong> Le chat <u>regarde</u> les oiseaux.<br>
+            <strong>Après :</strong> Le chat <u>épie</u> les oiseaux.
+          </div>
+        </div>
+        <div class="dras-card a-card" id="aCard" onclick="selectDRAS('A')">
+          <div class="dras-letter">A</div>
+          <div class="dras-word">Ajouter</div>
+          <div class="dras-desc">J'ajoute des informations (quand ? où ? comment ?)</div>
+          <div class="dras-example">
+            <strong>Avant :</strong> Le chat dort.<br>
+            <strong>Après :</strong> Le chat, <u>épuisé</u>, dort <u>paisiblement toute la journée</u>.
+          </div>
+        </div>
+        <div class="dras-card s-card" id="sCard" onclick="selectDRAS('S')">
+          <div class="dras-letter">S</div>
+          <div class="dras-word">Supprimer</div>
+          <div class="dras-desc">Je supprime ce qui est inutile ou mal dit</div>
+          <div class="dras-example">
+            <strong>Avant :</strong> <u>Il y a</u> un chat <u>qui</u> dort.<br>
+            <strong>Après :</strong> Un chat dort.
+          </div>
+        </div>
+      </div>
+
+      <!-- Sentence selector -->
+      <div id="drasSentencePanel" style="display:none;">
+        <div class="dras-task">
+          <strong>🎯 Choisis une phrase à améliorer</strong> avec le <strong id="selectedDRASLabel"></strong> :
+        </div>
+        <ul class="sentence-list" id="sentenceList"></ul>
+        <div id="drasWorkArea" style="display:none;">
+          <div class="phrase-to-improve" id="phraseToImprove"></div>
+          <div id="drasAILoader" class="ai-loader">
+            <div class="dots"><span></span><span></span><span></span></div>
+            Je t'aide à améliorer cette phrase...
+          </div>
+          <div id="drasAISuggestion" class="ai-response"></div>
+          <div id="drasInputArea" style="display:none;">
+            <p style="font-size:0.88rem; color:var(--text-muted); margin:10px 0 6px;">✏️ <strong>Maintenant à toi !</strong> Réécris la phrase améliorée :</p>
+            <textarea id="improvedSentence" style="min-height:80px;" placeholder="Écris ici ta phrase améliorée..."></textarea>
+            <div class="btn-row">
+              <button class="btn btn-primary btn-sm" onclick="validateDRAS()">✅ Valider cette amélioration</button>
+              <button class="btn btn-secondary btn-sm" onclick="skipDRAS()">Passer cette phrase →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRAS progress & navigation -->
+      <div id="drasProgressPanel" style="display:none; margin-top:16px;">
+        <div style="font-size:0.88rem; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Améliorations réalisées :</div>
+        <div class="dras-progress" id="drasProgressDots"></div>
+      </div>
+
+      <div class="btn-row" id="drasNavBtns" style="margin-top:20px;">
+        <button class="btn btn-teal" onclick="goToChampions()" id="btnGoChampions">
+          🏆 Vérifier l'orthographe avec les Champions →
+        </button>
+      </div>
+    </div>
+
+    <!-- Improved text preview -->
+    <div class="card" id="improvedTextCard" style="display:none;">
+      <div class="card-title"><span class="emoji">📄</span> Ton texte amélioré jusqu'ici</div>
+      <div class="result-box" id="currentImprovedText"></div>
+      <button class="btn btn-secondary btn-sm" onclick="editImproved()">✏️ Modifier directement</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: CHAMPIONS -->
+  <div class="screen" id="screen3">
+    <div class="card">
+      <div class="card-title"><span class="emoji">🏆</span> Étape 2 : Le Code des Champions</div>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:14px;">
+        Maintenant vérifie ton texte lettre par lettre avec le code CHAMPIONS !
+      </p>
+
+      <div class="champions-grid">
+        <div class="champ-card c-C" onclick="selectChamp('C')">
+          <div class="champ-letter">C</div>
+          <div class="champ-name">Conjugaison</div>
+          <div class="champ-short">Accord verbe-sujet</div>
+        </div>
+        <div class="champ-card c-H" onclick="selectChamp('H')">
+          <div class="champ-letter">H</div>
+          <div class="champ-name">Homophones</div>
+          <div class="champ-short">a/à, est/et, son/sont…</div>
+        </div>
+        <div class="champ-card c-A" onclick="selectChamp('A')">
+          <div class="champ-letter">A</div>
+          <div class="champ-name">Accords GN</div>
+          <div class="champ-short">Genre et nombre</div>
+        </div>
+        <div class="champ-card c-M" onclick="selectChamp('M')">
+          <div class="champ-letter">M</div>
+          <div class="champ-name">Majuscules</div>
+          <div class="champ-short">Début de phrase, noms propres</div>
+        </div>
+        <div class="champ-card c-P" onclick="selectChamp('P')">
+          <div class="champ-letter">P</div>
+          <div class="champ-name">Ponctuation</div>
+          <div class="champ-short">. ! ? , ; " "</div>
+        </div>
+        <div class="champ-card c-I" onclick="selectChamp('I')">
+          <div class="champ-letter">I</div>
+          <div class="champ-name">Illisible</div>
+          <div class="champ-short">Recopie lisiblement</div>
+        </div>
+        <div class="champ-card c-O" onclick="selectChamp('O')">
+          <div class="champ-letter">O</div>
+          <div class="champ-name">Orthographe</div>
+          <div class="champ-short">Vérifie dans le dico !</div>
+        </div>
+        <div class="champ-card c-N" onclick="selectChamp('N')">
+          <div class="champ-letter">N</div>
+          <div class="champ-name">Néant</div>
+          <div class="champ-short">Mot(s) oublié(s)</div>
+        </div>
+        <div class="champ-card c-S" onclick="selectChamp('S')">
+          <div class="champ-letter">S</div>
+          <div class="champ-name">Substituts</div>
+          <div class="champ-short">Évite les répétitions</div>
+        </div>
+      </div>
+
+      <div id="champDetail" style="display:none;">
+        <div class="dras-task" id="champTask"></div>
+        <div id="champAILoader" class="ai-loader">
+          <div class="dots"><span></span><span></span><span></span></div>
+          Je vérifie ton texte...
+        </div>
+        <div id="champAISuggestion" class="ai-response"></div>
+        <div id="champInputArea" style="display:none;">
+          <p style="font-size:0.88rem; color:var(--text-muted); margin:10px 0 6px;">✏️ <strong>Corrige ton texte</strong> si nécessaire :</p>
+          <textarea id="correctedText" style="min-height:120px;"></textarea>
+          <div class="btn-row">
+            <button class="btn btn-primary btn-sm" onclick="validateChamp()">✅ Valider la correction</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Champions progress -->
+      <div id="champsProgress" style="margin:16px 0; display:none;">
+        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:8px; font-weight:600;">Points vérifiés :</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;" id="champsDots"></div>
+        <div class="progress-bar-wrap" style="margin-top:10px;">
+          <div class="progress-bar-fill" id="champsProgressFill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-teal" onclick="goToFinal()">🎉 Voir mon texte final →</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">📄</span> Ton texte à corriger</div>
+      <div class="result-box" id="textForChampions"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: FINAL -->
+  <div class="screen" id="screen4">
+    <div class="card">
+      <div class="celebrate">
+        <span class="big-emoji">🌟</span>
+        <h2>Bravo, tu es un(e) champion(ne) !</h2>
+        <p>Tu as utilisé le DRAS et le code des Champions pour écrire un texte de qualité.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">📝</span> Comparaison</div>
+      <div class="compare-panel">
+        <div class="compare-col before">
+          <h4>📖 Ton texte de départ</h4>
+          <div class="text-content" id="finalTextBefore"></div>
+        </div>
+        <div class="compare-col after">
+          <h4>✨ Ton texte final amélioré</h4>
+          <div class="text-content" id="finalTextAfter"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="emoji">🎯</span> Ce que j'ai appris</div>
+      <div id="learningRecap" style="font-size:0.92rem; line-height:1.7; color:var(--text-muted);"></div>
+    </div>
+
+    <div class="btn-row" style="justify-content:center;">
+      <button class="btn btn-primary" onclick="startOver()">✏️ Écrire un nouveau texte</button>
+      <button class="btn btn-secondary" onclick="printText()">🖨️ Imprimer mon texte</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API_URL = "https://api.anthropic.com/v1/messages";
+
+let state = {
+  currentStep: 1,
+  initialText: '',
+  improvedText: '',
+  finalText: '',
+  currentDRAS: null,
+  selectedSentenceIdx: null,
+  sentences: [],
+  drasImprovements: [],
+  champsChecked: [],
+  champsCurrent: null
+};
+
+function splitSentences(text) {
+  const raw = text.match(/[^.!?]+[.!?]+/g) || [text];
+  return raw.map(s => s.trim()).filter(s => s.length > 3);
+}
+
+function goToStep(n) {
+  if (n > state.currentStep && !canGoTo(n)) return;
+  state.currentStep = n;
+  document.querySelectorAll('.screen').forEach((s, i) => {
+    s.classList.toggle('active', i + 1 === n);
+  });
+  document.querySelectorAll('.step-btn').forEach((btn, i) => {
+    btn.classList.remove('active', 'done');
+    if (i + 1 === n) btn.classList.add('active');
+    else if (i + 1 < n) btn.classList.add('done');
+  });
+}
+
+function canGoTo(n) {
+  if (n === 2) return state.initialText.length > 0;
+  if (n >= 3) return state.improvedText.length > 0;
+  if (n === 4) return state.finalText.length > 0;
+  return true;
+}
+
+function startDRAS() {
+  const txt = document.getElementById('initialText').value.trim();
+  if (!txt || txt.length < 20) {
+    alert('Écris un peu plus de texte avant de commencer ! (au moins 3 ou 4 phrases)');
+    return;
+  }
+  state.initialText = txt;
+  state.improvedText = txt;
+  state.sentences = splitSentences(txt);
+  state.drasImprovements = [];
+  document.getElementById('currentImprovedText').textContent = state.improvedText;
+  document.getElementById('improvedTextCard').style.display = 'block';
+  goToStep(2);
+}
+
+function selectDRAS(letter) {
+  state.currentDRAS = letter;
+  ['D','R','A','S'].forEach(l => {
+    document.getElementById(l.toLowerCase()+'Card').classList.toggle('active', l === letter);
+  });
+
+  const labels = { D: '🔵 Déplacer', R: '🟠 Remplacer', A: '🟢 Ajouter', S: '🟡 Supprimer' };
+  document.getElementById('selectedDRASLabel').textContent = labels[letter];
+  document.getElementById('drasSentencePanel').style.display = 'block';
+  document.getElementById('drasWorkArea').style.display = 'none';
+  document.getElementById('drasInputArea').style.display = 'none';
+  document.getElementById('drasAISuggestion').classList.remove('visible');
+
+  const list = document.getElementById('sentenceList');
+  list.innerHTML = '';
+  state.sentences.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.className = 'sentence-item';
+    li.onclick = () => selectSentence(i);
+    li.innerHTML = `<span class="sentence-num">${i+1}</span><span>${s}</span>`;
+    li.id = 'sentItem_' + i;
+    list.appendChild(li);
+  });
+}
+
+async function selectSentence(idx) {
+  state.selectedSentenceIdx = idx;
+  document.querySelectorAll('.sentence-item').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('phraseToImprove').textContent = state.sentences[idx];
+  document.getElementById('drasWorkArea').style.display = 'block';
+  document.getElementById('drasInputArea').style.display = 'none';
+  document.getElementById('drasAISuggestion').classList.remove('visible');
+
+  const loader = document.getElementById('drasAILoader');
+  loader.classList.add('visible');
+
+  const descriptions = {
+    D: `DÉPLACER: changer la place d'un groupe de mots (ex: complément de lieu ou de temps en début de phrase)`,
+    R: `REMPLACER: trouver un synonyme plus précis ou plus expressif pour un verbe ou un adjectif`,
+    A: `AJOUTER: enrichir la phrase avec des compléments circonstanciels (quand ? où ? comment ? pourquoi ?) ou des adjectifs`,
+    S: `SUPPRIMER: enlever les formulations faibles comme "il y a ... qui", "on voit ... qui", les mots inutiles ou les répétitions`
+  };
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Tu es un assistant pédagogique pour des élèves de CM1/CM2 (9-11 ans) en français.
+Tu dois aider un élève à améliorer une phrase en utilisant la technique ${descriptions[state.currentDRAS]}.
+Réponds de façon simple, encourageante et pédagogique. 
+Format de ta réponse (en français simple pour un enfant de 10 ans) :
+1. Une explication courte de ce qu'on peut faire (2-3 lignes max)
+2. 2 exemples d'amélioration possible
+3. Un encouragement
+Ne dépasse pas 150 mots.`,
+        messages: [{ role: 'user', content: `Voici la phrase d'un élève de CM : "${state.sentences[state.selectedSentenceIdx]}"\nAide-le à l'améliorer avec la technique ${state.currentDRAS} (${descriptions[state.currentDRAS]}). Donne 2 exemples concrets.` }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.map(b => b.text || '').join('') || "Je n'ai pas pu analyser cette phrase, mais essaie quand même !";
+    loader.classList.remove('visible');
+    const suggDiv = document.getElementById('drasAISuggestion');
+    suggDiv.innerHTML = `<div class="ai-label">💡 Idées pour t'aider</div>${text.replace(/\n/g,'<br>')}`;
+    suggDiv.classList.add('visible');
+  } catch(e) {
+    loader.classList.remove('visible');
+    const suggDiv = document.getElementById('drasAISuggestion');
+    suggDiv.innerHTML = `<div class="ai-label">💡 Conseil</div>Essaie d'améliorer cette phrase avec la technique ${state.currentDRAS} ! Regarde les exemples sur les cartes.`;
+    suggDiv.classList.add('visible');
+  }
+
+  document.getElementById('improvedSentence').value = state.sentences[idx];
+  document.getElementById('drasInputArea').style.display = 'block';
+}
+
+function validateDRAS() {
+  const improved = document.getElementById('improvedSentence').value.trim();
+  if (!improved) return;
+  const original = state.sentences[state.selectedSentenceIdx];
+  state.sentences[state.selectedSentenceIdx] = improved;
+  state.improvedText = state.sentences.join(' ');
+  state.drasImprovements.push({ type: state.currentDRAS, original, improved });
+  document.getElementById('currentImprovedText').textContent = state.improvedText;
+
+  updateDRASProgress();
+  document.getElementById('drasWorkArea').style.display = 'none';
+  document.getElementById('drasSentencePanel').style.display = 'none';
+  ['D','R','A','S'].forEach(l => document.getElementById(l.toLowerCase()+'Card').classList.remove('active'));
+  state.currentDRAS = null;
+
+  showImprovedCard();
+}
+
+function skipDRAS() {
+  document.getElementById('drasWorkArea').style.display = 'none';
+}
+
+function updateDRASProgress() {
+  const panel = document.getElementById('drasProgressPanel');
+  panel.style.display = 'block';
+  const dotsEl = document.getElementById('drasProgressDots');
+  dotsEl.innerHTML = state.drasImprovements.map(imp => `<div class="dras-dot done" title="${imp.type}: ${imp.original} → ${imp.improved}"></div>`).join('') + `<span class="dras-progress-label">${state.drasImprovements.length} amélioration(s)</span>`;
+}
+
+function showImprovedCard() {
+  document.getElementById('improvedTextCard').style.display = 'block';
+  document.getElementById('currentImprovedText').textContent = state.improvedText;
+}
+
+function editImproved() {
+  const txt = document.getElementById('currentImprovedText').textContent;
+  document.getElementById('currentImprovedText').innerHTML = `<textarea id="editImprovedTA" style="width:100%;min-height:120px;border:2px solid var(--purple);border-radius:8px;padding:10px;font-family:Nunito,sans-serif;font-size:0.95rem;">${txt}</textarea><div class="btn-row"><button class="btn btn-primary btn-sm" onclick="saveImprovedEdit()">💾 Sauvegarder</button></div>`;
+}
+
+function saveImprovedEdit() {
+  const val = document.getElementById('editImprovedTA').value.trim();
+  state.improvedText = val;
+  state.sentences = splitSentences(val);
+  document.getElementById('currentImprovedText').textContent = val;
+}
+
+function goToChampions() {
+  if (!state.improvedText) { alert('Améliore d\'abord ton texte avec le DRAS !'); return; }
+  state.finalText = state.improvedText;
+  state.champsChecked = [];
+  document.getElementById('textForChampions').textContent = state.finalText;
+  document.getElementById('correctedText').value = state.finalText;
+  goToStep(3);
+}
+
+const champInfo = {
+  C: { title: '🔵 Conjugaison', desc: 'Lis chaque verbe. Trouve son sujet. La terminaison est-elle correcte ?\nEx: <em>Ils mange</em> → <strong>Ils mangent</strong>' },
+  H: { title: '🟣 Homophones', desc: 'Fais attention aux mots qui se prononcent pareil mais s\'écrivent différemment :\n• a / à  •  est / et  •  son / sont  •  on / ont  •  ou / où  •  mes / mais  •  ce / se' },
+  A: { title: '🩷 Accords du groupe nominal', desc: 'Pour chaque groupe nom + adjectif : genre (masculin/féminin) et nombre (singulier/pluriel) sont-ils corrects ?\nEx: <em>Les petit chat</em> → <strong>Les petits chats</strong>' },
+  M: { title: '🟡 Majuscules', desc: 'Vérifie :\n• Majuscule en début de phrase\n• Majuscule pour les noms propres (prénoms, villes, pays...)' },
+  P: { title: '🟠 Ponctuation', desc: 'Chaque phrase a-t-elle un point à la fin ? (. ! ?)\nAs-tu utilisé des virgules là où il faut ?' },
+  I: { title: '🩵 Illisible', desc: 'Relis ton texte à voix haute. Y a-t-il des mots difficiles à lire ou à comprendre ? Réécris-les clairement.' },
+  O: { title: '🟢 Orthographe', desc: 'Cherche les mots dont tu n\'es pas sûr(e) dans le dictionnaire. Souligne les mots difficiles et vérifie-les !' },
+  N: { title: '🍊 Néant (mots oubliés)', desc: 'Relis chaque phrase. Y a-t-il des mots manquants ?\nEx: <em>J\'aime chocolat</em> → <strong>J\'aime le chocolat</strong>' },
+  S: { title: '💜 Substituts', desc: 'Y a-t-il des répétitions ? Remplace certains mots répétés par des pronoms ou des synonymes.\nEx: au lieu de répéter "le dragon", utilise "il", "la créature", "le monstre"...' }
+};
+
+async function selectChamp(letter) {
+  state.champsCurrent = letter;
+  document.querySelectorAll('.champ-card').forEach(c => c.classList.remove('active'));
+  document.querySelector('.c-' + letter).classList.add('active');
+
+  const info = champInfo[letter];
+  document.getElementById('champTask').innerHTML = `<strong>${info.title}</strong><br><br>${info.desc.replace(/\n/g,'<br>')}`;
+  document.getElementById('champDetail').style.display = 'block';
+  document.getElementById('champInputArea').style.display = 'none';
+  document.getElementById('champAISuggestion').classList.remove('visible');
+
+  const loader = document.getElementById('champAILoader');
+  loader.classList.add('visible');
+
+  const champPrompts = {
+    C: `Vérifie les accords des verbes avec leurs sujets. Signale chaque erreur de conjugaison en montrant la correction.`,
+    H: `Vérifie tous les homophones (a/à, est/et, son/sont, on/ont, ou/où, mes/mais, ce/se, ces/ses). Signale les erreurs.`,
+    A: `Vérifie les accords en genre et en nombre dans les groupes nominaux (déterminant, nom, adjectif). Signale les erreurs.`,
+    M: `Vérifie les majuscules : début de phrase et noms propres. Signale les erreurs.`,
+    P: `Vérifie la ponctuation : points en fin de phrase, virgules, points d'interrogation et d'exclamation. Signale les problèmes.`,
+    I: `Identifie les tournures de phrases maladroites ou peu claires, et propose des reformulations.`,
+    O: `Signale les mots probablement mal orthographiés avec la correction.`,
+    N: `Identifie les phrases où il manque des mots. Propose les corrections.`,
+    S: `Identifie les répétitions dans le texte et propose des substituts (pronoms, synonymes).`
+  };
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Tu es un correcteur pédagogique pour des élèves de CM1/CM2 (9-11 ans). Tu dois analyser un texte d'élève selon une règle précise. Sois encourageant, simple et clair. Donne maximum 3-4 remarques. Si le texte est correct sur ce point, dis-le avec un compliment. Réponds en 100 mots maximum.`,
+        messages: [{ role: 'user', content: `Texte de l'élève : "${state.finalText}"\n\nRègle à vérifier : ${champPrompts[letter]}\n\nAnalyse uniquement ce point précis.` }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.map(b => b.text || '').join('') || 'Je n\'ai pas pu analyser ce point. Vérifie toi-même selon la règle indiquée !';
+    loader.classList.remove('visible');
+    const sug = document.getElementById('champAISuggestion');
+    sug.innerHTML = `<div class="ai-label">🔍 Analyse de ton texte</div>${text.replace(/\n/g,'<br>')}`;
+    sug.classList.add('visible');
+  } catch(e) {
+    loader.classList.remove('visible');
+    const sug = document.getElementById('champAISuggestion');
+    sug.innerHTML = `<div class="ai-label">💡 À vérifier</div>Vérifie ton texte selon la règle indiquée ci-dessus !`;
+    sug.classList.add('visible');
+  }
+
+  document.getElementById('correctedText').value = state.finalText;
+  document.getElementById('champInputArea').style.display = 'block';
+}
+
+function validateChamp() {
+  const corrected = document.getElementById('correctedText').value.trim();
+  if (corrected) { state.finalText = corrected; }
+  if (!state.champsChecked.includes(state.champsCurrent)) {
+    state.champsChecked.push(state.champsCurrent);
+  }
+  document.getElementById('textForChampions').textContent = state.finalText;
+  document.getElementById('correctedText').value = state.finalText;
+  document.getElementById('champDetail').style.display = 'none';
+  document.querySelectorAll('.champ-card').forEach(c => c.classList.remove('active'));
+
+  updateChampsProgress();
+}
+
+function updateChampsProgress() {
+  const panel = document.getElementById('champsProgress');
+  panel.style.display = 'block';
+  const dotsEl = document.getElementById('champsDots');
+  const all = ['C','H','A','M','P','I','O','N','S'];
+  dotsEl.innerHTML = state.champsChecked.map(l => `<span style="background:var(--green);color:white;border-radius:999px;padding:3px 10px;font-size:0.8rem;font-weight:700;">${l}</span>`).join('');
+  const pct = Math.round((state.champsChecked.length / all.length) * 100);
+  document.getElementById('champsProgressFill').style.width = pct + '%';
+}
+
+function goToFinal() {
+  document.getElementById('finalTextBefore').textContent = state.initialText;
+  document.getElementById('finalTextAfter').textContent = state.finalText;
+
+  const drasTypes = [...new Set(state.drasImprovements.map(i => i.type))];
+  const drasLabels = { D: 'Déplacer', R: 'Remplacer', A: 'Ajouter', S: 'Supprimer' };
+  let recap = '';
+  if (drasTypes.length > 0) {
+    recap += `✅ Avec le DRAS, tu as utilisé : ${drasTypes.map(t => drasLabels[t]).join(', ')}. Tu as fait ${state.drasImprovements.length} amélioration(s) dans tes phrases.\n\n`;
+  }
+  if (state.champsChecked.length > 0) {
+    recap += `🏆 Avec le code des Champions, tu as vérifié : ${state.champsChecked.join(', ')}. C'est ${state.champsChecked.length}/9 règles vérifiées !\n\n`;
+  }
+  if (state.drasImprovements.length === 0 && state.champsChecked.length === 0) {
+    recap = '📖 La prochaine fois, essaie d\'utiliser toutes les étapes pour améliorer encore plus ton texte !';
+  } else {
+    recap += '🌟 Excellent travail ! Ton texte final est beaucoup plus riche et correct que ta première version.';
+  }
+  document.getElementById('learningRecap').innerHTML = recap.replace(/\n/g, '<br>');
+
+  goToStep(4);
+}
+
+function startOver() {
+  state = {
+    currentStep: 1,
+    initialText: '',
+    improvedText: '',
+    finalText: '',
+    currentDRAS: null,
+    selectedSentenceIdx: null,
+    sentences: [],
+    drasImprovements: [],
+    champsChecked: [],
+    champsCurrent: null
+  };
+  document.getElementById('initialText').value = '';
+  document.getElementById('drasProgressPanel').style.display = 'none';
+  document.getElementById('drasSentencePanel').style.display = 'none';
+  document.getElementById('drasWorkArea').style.display = 'none';
+  document.getElementById('improvedTextCard').style.display = 'none';
+  document.getElementById('champDetail').style.display = 'none';
+  document.getElementById('champsProgress').style.display = 'none';
+  ['D','R','A','S'].forEach(l => document.getElementById(l.toLowerCase()+'Card').classList.remove('active'));
+  goToStep(1);
+}
+
+function printText() {
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Mon texte final</title>
+  <style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;line-height:1.8;font-size:16px;}h1{font-size:1.4rem;margin-bottom:20px;}h2{font-size:1.1rem;color:#666;margin:20px 0 10px;}p{margin:0 0 12px;}</style>
+  </head><body>
+  <h1>✏️ Mon texte amélioré</h1>
+  <h2>Texte de départ :</h2><p>${state.initialText.replace(/\n/g,'</p><p>')}</p>
+  <h2>Texte final :</h2><p>${state.finalText.replace(/\n/g,'</p><p>')}</p>
+  </body></html>`);
+  w.document.close();
+  w.print();
+}
+</script>
+</body>
+</html>
